@@ -13,3 +13,4 @@ DreamCakes është një aplikacion e-commerce ku përdoruesit mund të shikojnë
 - Shikimi i tortave të disponueshme 🍰
 - Shtimi i produkteve në shportë 🛒
 - Procesi i blerjes online 💳
+
