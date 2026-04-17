@@ -2,30 +2,52 @@
 
 namespace App\Services;
 
-use App\Repositories\FileRepository;
+use App\Repositories\CartRepository;
 
 class CartService
 {
-    private FileRepository $repository;
+    private CartRepository $repository;
 
     public function __construct()
     {
-        $this->repository = new FileRepository('cart.csv');
+        $this->repository = new CartRepository();
     }
 
-    public function getCartItems(): array
+    public function getCartItems(int $userId): array
     {
-        return $this->repository->getAll();
+        return $this->repository->getByUser($userId);
     }
 
-    public function addToCart(array $data): bool
+    public function addToCart(int $userId, int $cakeId, int $quantity = 1): bool|string
     {
-        $this->repository->add($data);
-        return $this->repository->save();
+        if ($quantity <= 0) return "Sasia duhet të jetë më shumë se 0!";
+        
+        return $this->repository->add([
+            'user_id' => $userId,
+            'cake_id' => $cakeId,
+            'quantity' => $quantity,
+        ]);
     }
 
-    public function removeFromCart(int $id): ?array
+    public function removeFromCart(int $itemId): bool|string
     {
-        return $this->repository->getById($id);
+        $result = $this->repository->remove($itemId);
+        if (!$result) return "Itemi nuk u gjet në shportë!";
+        return true;
+    }
+
+    public function clearCart(int $userId): bool
+    {
+        return $this->repository->clearByUser($userId);
+    }
+
+    public function getTotal(int $userId): float
+    {
+        $items = $this->repository->getByUser($userId);
+        $total = 0;
+        foreach ($items as $item) {
+            $total += $item['cake']['price'] * $item['quantity'];
+        }
+        return $total;
     }
 }
