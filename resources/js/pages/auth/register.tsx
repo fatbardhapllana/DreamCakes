@@ -1,12 +1,7 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
-
 import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
 interface RegisterForm {
@@ -32,87 +27,82 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
-            <Head title="Register" />
-            <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input
-                            id="name"
-                            type="text"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="name"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            disabled={processing}
-                            placeholder="Full name"
-                        />
-                        <InputError message={errors.name} className="mt-2" />
-                    </div>
+        <AuthLayout title="Krijo një llogari" description="Shkruaj të dhënat e tua për të krijuar llogarinë">
+            <Head title="Regjistrohu" />
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            tabIndex={2}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            disabled={processing}
-                            placeholder="email@example.com"
-                        />
-                        <InputError message={errors.email} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={3}
-                            autoComplete="new-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            disabled={processing}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
-                        <Input
-                            id="password_confirmation"
-                            type="password"
-                            required
-                            tabIndex={4}
-                            autoComplete="new-password"
-                            value={data.password_confirmation}
-                            onChange={(e) => setData('password_confirmation', e.target.value)}
-                            disabled={processing}
-                            placeholder="Confirm password"
-                        />
-                        <InputError message={errors.password_confirmation} />
-                    </div>
-
-                    <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create account
-                    </Button>
+            <form className="flex flex-col gap-5" onSubmit={submit}>
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm text-gray-300">Emri i plotë</label>
+                    <input
+                        type="text"
+                        required
+                        autoFocus
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
+                        disabled={processing}
+                        placeholder="Emri yt"
+                        className="bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-pink-500 placeholder-gray-500"
+                    />
+                    <InputError message={errors.name} />
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
-                    Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
-                        Log in
-                    </TextLink>
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm text-gray-300">Email Adresa</label>
+                    <input
+                        type="email"
+                        required
+                        value={data.email}
+                        onChange={(e) => setData('email', e.target.value)}
+                        disabled={processing}
+                        placeholder="email@example.com"
+                        className="bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-pink-500 placeholder-gray-500"
+                    />
+                    <InputError message={errors.email} />
                 </div>
+
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm text-gray-300">Fjalëkalimi</label>
+                    <input
+                        type="password"
+                        required
+                        value={data.password}
+                        onChange={(e) => setData('password', e.target.value)}
+                        disabled={processing}
+                        placeholder="Fjalekalimi"
+                        className="bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-pink-500 placeholder-gray-500"
+                    />
+                    <InputError message={errors.password} />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm text-gray-300">Konfirmo fjalëkalimin</label>
+                    <input
+                        type="password"
+                        required
+                        value={data.password_confirmation}
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
+                        disabled={processing}
+                        placeholder="Konfirmo fjalekalimin"
+                        className="bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-pink-500 placeholder-gray-500"
+                    />
+                    <InputError message={errors.password_confirmation} />
+                </div>
+
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className="w-full bg-pink-500 text-white py-2.5 rounded-lg font-medium hover:bg-pink-600 transition flex items-center justify-center gap-2 mt-2"
+                >
+                    {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                    Regjistrohu
+                </button>
+
+                <p className="text-center text-sm text-gray-400">
+                    Ke llogari?{' '}
+                    <Link href={route('login')} className="text-pink-400 hover:text-pink-300 transition">
+                        Kyqu
+                    </Link>
+                </p>
             </form>
         </AuthLayout>
     );

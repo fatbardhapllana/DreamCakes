@@ -1,13 +1,7 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
-
 import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
 interface LoginForm {
@@ -36,69 +30,78 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-            <Head title="Log in" />
+        <AuthLayout title="Kyçu në llogarinë tënde" description="Shkruaj emailin dhe fjalëkalimin për të hyrë">
+            <Head title="Kyçu" />
 
-            <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
-                        />
-                        <InputError message={errors.email} />
-                    </div>
+            {status && (
+                <div className="mb-4 text-center text-sm font-medium text-green-400">{status}</div>
+            )}
 
-                    <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
-                            {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Forgot password?
-                                </TextLink>
-                            )}
-                        </div>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={2}
-                            autoComplete="current-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                        <Checkbox id="remember" name="remember" tabIndex={3} />
-                        <Label htmlFor="remember">Remember me</Label>
-                    </div>
-
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Log in
-                    </Button>
+            <form className="flex flex-col gap-5" onSubmit={submit}>
+                <div className="flex flex-col gap-1">
+                    <label className="text-sm text-gray-300">Email Adresa</label>
+                    <input
+                        type="email"
+                        required
+                        autoFocus
+                        value={data.email}
+                        onChange={(e) => setData('email', e.target.value)}
+                        placeholder="email@example.com"
+                        className="bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-pink-500 placeholder-gray-500"
+                    />
+                    <InputError message={errors.email} />
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
-                    Don't have an account?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
-                        Sign up
-                    </TextLink>
+                <div className="flex flex-col gap-1">
+                    <div className="flex justify-between items-center">
+                        <label className="text-sm text-gray-300">Fjalëkalimi</label>
+                        {canResetPassword && (
+                            <Link
+                                href={route('password.request')}
+                                className="text-xs text-pink-400 hover:text-pink-300 transition"
+                            >
+                                Harruat fjalëkalimin?
+                            </Link>
+                        )}
+                    </div>
+                    <input
+                        type="password"
+                        required
+                        value={data.password}
+                        onChange={(e) => setData('password', e.target.value)}
+                        placeholder="Fjalekalimi"
+                        className="bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-pink-500 placeholder-gray-500"
+                    />
+                    <InputError message={errors.password} />
                 </div>
+
+                <div className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        id="remember"
+                        checked={data.remember}
+                        onChange={(e) => setData('remember', e.target.checked)}
+                        className="accent-pink-500"
+                    />
+                    <label htmlFor="remember" className="text-sm text-gray-300">Më mbaj mend</label>
+                </div>
+
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className="w-full bg-pink-500 text-white py-2.5 rounded-lg font-medium hover:bg-pink-600 transition flex items-center justify-center gap-2 mt-2"
+                >
+                    {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                    Kyçu
+                </button>
+
+                <p className="text-center text-sm text-gray-400">
+                    Nuk ke llogari?{' '}
+                    <Link href={route('register')} className="text-pink-400 hover:text-pink-300 transition">
+                        Regjistrohu
+                    </Link>
+                </p>
             </form>
-
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
         </AuthLayout>
     );
 }

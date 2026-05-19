@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Services;
 
 use App\Repositories\OrderRepository;
 use App\Repositories\CartRepository;
+use App\Models\OrderItem;
 
 class OrderService
 {
@@ -23,9 +23,7 @@ class OrderService
 
     public function getOrderById(int $id): ?array
     {
-        $order = $this->orderRepository->getById($id);
-        if (!$order) return null;
-        return $order;
+        return $this->orderRepository->getById($id);
     }
 
     public function getOrdersByUser(int $userId): array
@@ -35,28 +33,34 @@ class OrderService
 
     public function placeOrder(int $userId, string $notes = ''): bool|string
     {
-        // Merr items nga shporta
         $cartItems = $this->cartRepository->getByUser($userId);
-        
+
         if (empty($cartItems)) return "Shporta është bosh!";
 
-        // Llogarit totalin
         $total = 0;
         foreach ($cartItems as $item) {
             $total += $item['cake']['price'] * $item['quantity'];
         }
 
-        // Krijo porosinë
-        $result = $this->orderRepository->create([
+        $orderId = $this->orderRepository->create([
             'user_id' => $userId,
             'total_price' => $total,
             'status' => 'pending',
             'notes' => $notes,
         ]);
 
-        if (!$result) return "Porosia nuk u krye!";
+        if (!$orderId) return "Porosia nuk u krye!";
 
-        // Pastro shportën
+        // Ruaj order items
+        foreach ($cartItems as $item) {
+            OrderItem::create([
+                'order_id' => $orderId,
+                'cake_id' => $item['cake_id'],
+                'quantity' => $item['quantity'],
+                'price' => $item['cake']['price'],
+            ]);
+        }
+
         $this->cartRepository->clearByUser($userId);
 
         return true;
@@ -66,7 +70,11 @@ class OrderService
     {
         $validStatuses = ['pending', 'confirmed', 'delivered', 'cancelled'];
         if (!in_array($status, $validStatuses)) return "Status i pavlefshëm!";
-        
         return $this->orderRepository->updateStatus($id, $status);
+    }
+
+    public function deleteOrder(int $id): bool|string
+    {
+        return $this->orderRepository->delete($id);
     }
 }

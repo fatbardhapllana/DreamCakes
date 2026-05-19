@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +14,7 @@ class Cake extends Model
         'price',
         'category',
         'is_available',
+        'image',
     ];
 
     protected $casts = [

@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Services\CakeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class CakeController extends Controller
@@ -35,6 +35,11 @@ class CakeController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return Inertia::render('cakes/Create');
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -43,7 +48,13 @@ class CakeController extends Controller
             'price' => 'required|numeric|min:0.01',
             'category' => 'required|string',
             'is_available' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('cakes', 'public');
+            $validated['image'] = $path;
+        }
 
         $result = $this->service->addCake($validated);
 
@@ -51,7 +62,7 @@ class CakeController extends Controller
             return back()->withErrors(['message' => $result]);
         }
 
-        return redirect()->route('cakes.index')
+        return redirect()->route('admin.index')
             ->with('success', 'Torta u shtua me sukses!');
     }
 
@@ -69,6 +80,20 @@ class CakeController extends Controller
         ]);
     }
 
+    public function edit(string $id)
+    {
+        $cake = $this->service->getCakeById((int)$id);
+
+        if (!$cake) {
+            return redirect()->route('admin.index')
+                ->withErrors(['message' => 'Torta nuk u gjet!']);
+        }
+
+        return Inertia::render('cakes/Edit', [
+            'cake' => $cake,
+        ]);
+    }
+
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
@@ -77,7 +102,13 @@ class CakeController extends Controller
             'price' => 'required|numeric|min:0.01',
             'category' => 'required|string',
             'is_available' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('cakes', 'public');
+            $validated['image'] = $path;
+        }
 
         $result = $this->service->updateCake((int)$id, $validated);
 
@@ -85,8 +116,8 @@ class CakeController extends Controller
             return back()->withErrors(['message' => $result]);
         }
 
-        return redirect()->route('cakes.index')
-            ->with('success', 'Torta u perditesua me sukses!');
+        return redirect()->route('admin.index')
+            ->with('success', 'Torta u përditësua me sukses!');
     }
 
     public function destroy(string $id)
@@ -97,7 +128,7 @@ class CakeController extends Controller
             return back()->withErrors(['message' => $result]);
         }
 
-        return redirect()->route('cakes.index')
+        return redirect()->route('admin.index')
             ->with('success', 'Torta u fshi me sukses!');
     }
 }

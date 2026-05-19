@@ -3,32 +3,52 @@ import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { LayoutGrid, CakeSlice, ShoppingCart, PackageCheck, Settings } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        url: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        url: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        url: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
-    },
-];
-
 export function AppSidebar() {
+    const { auth } = usePage().props as any;
+    const isAdmin = auth?.user?.role === 'admin';
+
+    const customerNavItems: NavItem[] = [
+        {
+            title: 'Ballina',
+            url: '/dashboard',
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Tortat',
+            url: '/cakes',
+            icon: CakeSlice,
+        },
+        {
+            title: 'Shporta',
+            url: '/cart',
+            icon: ShoppingCart,
+        },
+        {
+            title: 'Porositë e Mia',
+            url: '/orders',
+            icon: PackageCheck,
+        },
+    ];
+
+    const adminNavItems: NavItem[] = [
+        {
+            title: 'Ballina',
+            url: '/dashboard',
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Paneli i Adminit',
+            url: '/admin',
+            icon: Settings,
+        },
+    ];
+
+    const navItems = isAdmin ? adminNavItems : customerNavItems;
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -42,13 +62,10 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={navItems} />
             </SidebarContent>
-
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
