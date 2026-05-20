@@ -39,9 +39,9 @@ export default function Dashboard({ totalCakes, totalOrders, isAdmin, activeOrde
 
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-white">Mir se erdhe ne DreamCakes! 🍰</h1>
+                    <h1 className="text-3xl font-bold text-white">Mirë se erdhe në DreamCakes! 🍰</h1>
                     <p className="text-gray-400 mt-1">
-                        {isAdmin ? 'Menaxho DreamCakes nga paneli i adminit.' : 'Porosit tortat tona te fresketa.'}
+                        {isAdmin ? 'Menaxho DreamCakes nga paneli i adminit.' : 'Porosit tortat tona të freskëta.'}
                     </p>
                 </div>
 
@@ -50,7 +50,7 @@ export default function Dashboard({ totalCakes, totalOrders, isAdmin, activeOrde
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 text-center">
                             <p className="text-4xl font-bold text-pink-500">{totalCakes}</p>
-                            <p className="text-gray-400 mt-1 text-sm">Torta ne Menu</p>
+                            <p className="text-gray-400 mt-1 text-sm">Torta në Menu</p>
                         </div>
                         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 text-center">
                             <p className="text-4xl font-bold text-pink-500">{totalOrders}</p>
@@ -68,7 +68,7 @@ export default function Dashboard({ totalCakes, totalOrders, isAdmin, activeOrde
                         >
                             <p className="text-2xl mb-2">🍰</p>
                             <p className="font-bold text-white group-hover:text-pink-400">Shiko Tortat</p>
-                            <p className="text-gray-500 text-sm">Shfleto listen e tortave</p>
+                            <p className="text-gray-500 text-sm">Shfleto listën e tortave</p>
                         </button>
                         <button
                             onClick={() => router.get('/admin')}
@@ -87,8 +87,8 @@ export default function Dashboard({ totalCakes, totalOrders, isAdmin, activeOrde
                         {/* Banner */}
                         <div className="bg-pink-600 rounded-xl p-6 mb-8 flex items-center justify-between">
                             <div>
-                                <p className="text-white font-bold text-xl mb-1">Porosi sot dhe merr dorezim falas!</p>
-                                <p className="text-pink-100 text-sm">Oferta e limituar — vlefshme vetem sot</p>
+                                <p className="text-white font-bold text-xl mb-1">Porosit sot dhe merr dorëzim falas!</p>
+                                <p className="text-pink-100 text-sm">Oferta e limituar — vlefshme vetëm sot</p>
                             </div>
                             <button
                                 onClick={() => router.get('/cakes')}
@@ -129,18 +129,18 @@ export default function Dashboard({ totalCakes, totalOrders, isAdmin, activeOrde
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 text-center">
                                     <p className="text-4xl mb-3">🎂</p>
-                                    <p className="font-bold text-white mb-1">Fresketa cdo dite</p>
-                                    <p className="text-gray-500 text-sm">Te bera me ingrediente natyrale dhe me dashuri</p>
+                                    <p className="font-bold text-white mb-1">Freskëta cdo ditë</p>
+                                    <p className="text-gray-500 text-sm">Të bëra me ingredientë natyralë dhe me dashuri</p>
                                 </div>
                                 <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 text-center">
                                     <p className="text-4xl mb-3">🛒</p>
-                                    <p className="font-bold text-white mb-1">Porosi e lehte</p>
-                                    <p className="text-gray-500 text-sm">Porosit online dhe merr konfirmim menjehere</p>
+                                    <p className="font-bold text-white mb-1">Porosi e lehtë</p>
+                                    <p className="text-gray-500 text-sm">Porosit online dhe merr konfirmim menjeherë</p>
                                 </div>
                                 <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 text-center">
                                     <p className="text-4xl mb-3">🚚</p>
-                                    <p className="font-bold text-white mb-1">Dorezim i shpejte</p>
-                                    <p className="text-gray-500 text-sm">Dorezojme drejt te dera juaj</p>
+                                    <p className="font-bold text-white mb-1">Dorëzim i shpejtë</p>
+                                    <p className="text-gray-500 text-sm">Dorezojmë drejt te dera juaj</p>
                                 </div>
                             </div>
                         </div>
